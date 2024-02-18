@@ -40,5 +40,27 @@ or if you want x64 only:
 
 platform: `[x64]`
 
+## WinUI 3
+there is a knonw issue for WinUI 3, if you are using Class Library in your project, you should add following code into your class library csproj file:
+
+```xml
+<EnableMsixTooling>true</EnableMsixTooling>
+```
+
+Otherwise, the build will fail.
+
+### Solution
+for fixing this, we passed `/p:GITHUB_ACTIONS=true` property into dotnet publish command.
+
+now you can use a `Directory.Build.props` file in your project root folder with following Content:
+
+```xml
+<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <EnableMsixTooling>true</EnableMsixTooling>
+</PropertyGroup>
+```
+
+This way, when you are using github action, all your projects will include `EnableMsixTooling`, And the build/publish will be done successfully.
+
 ---
 ![Preview](Preview.png)
