@@ -37,6 +37,7 @@ if you want to build your app for x64 and x86 only, you can change platform:
 platform: `[x64, x86]`
 
 or if you want x64 only:
+
 platform: `[x64]`
 
 ![Preview](Preview.png)
