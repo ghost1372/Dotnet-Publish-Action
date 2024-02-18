@@ -3,8 +3,9 @@ Publish your dotnet app (WinUI 3, WPF, Console) as a zip file with auto changelo
 
 ## How to use?
 - Download yml file into your repo and `./github/workflow` folder.
-
 - Edit yml file and Config Options:
+
+> **_NOTE:_**  currently we build your dotnet app with `dotnet-version: 8.0.x`
 
 ### Configuring Project
 PROJECT_PATH: App1/App1.csproj
