@@ -40,4 +40,5 @@ or if you want x64 only:
 
 platform: `[x64]`
 
+---
 ![Preview](Preview.png)
