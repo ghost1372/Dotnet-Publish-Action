@@ -11,6 +11,11 @@ env:
   PROJECT_PATH: YOUR_Folder/YOUR_APP_NAME.csproj
   APP_NAME: YOUR_APP_NAME
 
+  # Custom Nuget Feed
+  IS_COMMUNITY_TOOLKIT_NUGET_FEED_ENABLED: false
+  IS_CUSTOM_NUGET_SOURCE_ENABLED: false
+  CUSTOM_NUGET_SOURCES: '' # Example ('https://api.nuget.org/v3/index.json, https://api.nuget.org/v2/index.json,...')
+
   # Configuring Dotnet Build Commands
   PUBLISH_OUTPUT_FOLDER: publish
   PUBLISH_SELF_CONTAINED: false
@@ -41,6 +46,22 @@ jobs:
       with:
        dotnet-version: '8.0.x'
 
+    # Add CommunityToolkit Labs and Main nuget sources
+    - run: |
+        nuget sources add -name CommunityToolkit-Labs -source https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json
+        nuget sources add -name CommunityToolkit-Main -source https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-MainLatest/nuget/v3/index.json
+      if: contains(env.IS_COMMUNITY_TOOLKIT_NUGET_FEED_ENABLED, 'true')
+
+    # Add Custom nuget sources
+    - run: |
+        $sources = $env:CUSTOM_NUGET_SOURCES -split ','
+        $prefix = "CUSTOM_SOURCES_"
+        for ($i = 0; $i -lt $sources.Length; $i++) {
+          $sourceName = "${prefix}$($i + 1)"
+          nuget sources add -name $sourceName -source $sources[$i]
+        }
+      if: contains(env.IS_CUSTOM_NUGET_SOURCE_ENABLED, 'true')
+
     # Reading version tag from the csproj file.
     - uses: kzrnm/get-net-sdk-project-versions-action@v2
       id: get-version
@@ -69,7 +90,7 @@ jobs:
         $list = @("beta", "alpha", "preview", "experiment")
 
         # Define the suffix variable
-        $suffix = steps.get-version.outputs.version-suffix
+        $suffix = "${{ steps.get-version.outputs.version-suffix }}"
 
         foreach ($item in $list) {
           # Convert both strings to lower case for case-insensitive comparison
