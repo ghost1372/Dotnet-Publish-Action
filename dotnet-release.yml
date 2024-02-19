@@ -11,8 +11,8 @@ env:
   PROJECT_PATH: YOUR_Folder/YOUR_APP_NAME.csproj
   APP_NAME: YOUR_APP_NAME
 
-  # Custom Nuget Feed
-  IS_COMMUNITY_TOOLKIT_NUGET_FEED_ENABLED: false
+  # Custom Nuget Source
+  IS_COMMUNITY_TOOLKIT_NUGET_SOURCE_ENABLED: false
   IS_CUSTOM_NUGET_SOURCE_ENABLED: false
   CUSTOM_NUGET_SOURCES: '' # Example ('https://api.nuget.org/v3/index.json, https://api.nuget.org/v2/index.json,...')
 
@@ -50,7 +50,7 @@ jobs:
     - run: |
         nuget sources add -name CommunityToolkit-Labs -source https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json
         nuget sources add -name CommunityToolkit-Main -source https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-MainLatest/nuget/v3/index.json
-      if: contains(env.IS_COMMUNITY_TOOLKIT_NUGET_FEED_ENABLED, 'true')
+      if: contains(env.IS_COMMUNITY_TOOLKIT_NUGET_SOURCE_ENABLED, 'true')
 
     # Add Custom nuget sources
     - run: |

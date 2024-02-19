@@ -11,6 +11,20 @@ Publish your dotnet app (WinUI 3, WPF, Console) as a zip file with auto changelo
 - PROJECT_PATH: `App1/App1.csproj`
 - APP_NAME: `MyApp`
 
+### Custom Nuget Source
+you can add your nuget sources.
+
+- IS_COMMUNITY_TOOLKIT_NUGET_SOURCE_ENABLED: `false`
+- IS_CUSTOM_NUGET_SOURCE_ENABLED: `false`
+- CUSTOM_NUGET_SOURCES: '' # Example ('https://api.nuget.org/v3/index.json, https://api.nuget.org/v2/index.json,...')
+
+> **_NOTE:_**  if you enable `IS_COMMUNITY_TOOLKIT_NUGET_SOURCE_ENABLED` following CommunityToolkit sources will be added.
+
+```
+CommunityToolkit-Labs: https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json
+CommunityToolkit-Main: https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-MainLatest/nuget/v3/index.json
+```   
+
 ### Configuring Dotnet Build Commands
 - PUBLISH_OUTPUT_FOLDER: `publish`
 - PUBLISH_SELF_CONTAINED: `false`
@@ -25,7 +39,7 @@ Publish your dotnet app (WinUI 3, WPF, Console) as a zip file with auto changelo
 - ALLOW_UPDATES: `false`
 - ARTIFACT_ERRORS_FAIL_BUILD: `false`
 
-if you set a suffix (beta, alpha, preview, experiment) for version tag in your csproj file, `IS_PRE_RELEASE` will be changed to `true` based on suffix.
+if you set a suffix (beta, alpha, preview, experimental) for version tag in your csproj file, `IS_PRE_RELEASE` will be changed to `true` based on suffix.
 
 ```xml
 <Version>1.0.0-beta1</Version>
