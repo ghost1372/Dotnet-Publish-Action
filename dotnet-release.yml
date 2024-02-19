@@ -11,6 +11,9 @@ env:
   PROJECT_PATH: YOUR_Folder/YOUR_APP_NAME.csproj
   APP_NAME: YOUR_APP_NAME
 
+  # Check Tag
+  CHECK_TAG_EXISTENCE_BEFORE_CREATING_TAG: false
+  
   # Custom Nuget Source
   IS_COMMUNITY_TOOLKIT_NUGET_SOURCE_ENABLED: false
   IS_CUSTOM_NUGET_SOURCE_ENABLED: false
@@ -55,10 +58,11 @@ jobs:
     # Add Custom nuget sources
     - run: |
         $sources = $env:CUSTOM_NUGET_SOURCES -split ','
+        $trimmedSources = $sources | ForEach-Object { $_.Trim() }
         $prefix = "CUSTOM_SOURCES_"
-        for ($i = 0; $i -lt $sources.Length; $i++) {
+        for ($i = 0; $i -lt $trimmedSources.Length; $i++) {
           $sourceName = "${prefix}$($i + 1)"
-          nuget sources add -name $sourceName -source $sources[$i]
+          nuget sources add -name $sourceName -source $trimmedSources[$i]
         }
       if: contains(env.IS_CUSTOM_NUGET_SOURCE_ENABLED, 'true')
 
@@ -122,9 +126,21 @@ jobs:
           git config --local user.name "GitHub Actions"
 
           TAG_NAME="v${{ env.APP_VERSION }}"
-          git tag $TAG_NAME
-          git push origin $TAG_NAME
-
+          echo "$TAG_NAME"
+          if [[ "${{ env.CHECK_TAG_EXISTENCE_BEFORE_CREATING_TAG }}" == "true" ]]; then
+              git ls-remote --tags 2>/dev/null | grep $TAG_NAME 1>/dev/null
+              if [[ "$?" == 0 ]]; then
+                  echo "Found tag"
+              else
+                  echo "Tag not found"
+                  git tag "$TAG_NAME"
+                  git push origin "$TAG_NAME"
+              fi
+          else
+              git tag "$TAG_NAME"
+              git push origin "$TAG_NAME"
+          fi  
+          
       # Installing a package for generating a changelog file
       - run: npm install -g auto-changelog  
       - run: auto-changelog --commit-limit false --starting-version v${{ env.APP_VERSION }} --ending-version v${{ env.APP_VERSION }} --hide-credit  

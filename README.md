@@ -11,6 +11,13 @@ Publish your dotnet app (WinUI 3, WPF, Console) as a zip file with auto changelo
 - PROJECT_PATH: `App1/App1.csproj`
 - APP_NAME: `MyApp`
 
+### Check Tag
+if you set to `true`, before creating a new tag, we can check to see if tag exist, we go to next step, but if tag is not exsist, then we create a new tag.
+if you set this to `false`, we dont check it. so if tag already exist, workflow will be terminated.
+
+- CHECK_TAG_EXISTENCE_BEFORE_CREATING_TAG: `false`
+
+
 ### Custom Nuget Source
 you can add your nuget sources.
 
