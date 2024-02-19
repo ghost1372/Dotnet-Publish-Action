@@ -127,9 +127,8 @@ jobs:
 
           TAG_NAME="v${{ env.APP_VERSION }}"
           if [[ "${{ env.CHECK_TAG_EXISTENCE_BEFORE_CREATING_TAG }}" == "true" ]]; then
-              git ls-remote --tags 2>/dev/null | grep $TAG_NAME 1>/dev/null
-              if [[ "$?" == 0 ]]; then
-                  echo "Tag found. Skipping to the next step"
+              if [[ $(git tag -l "$TAG_NAME") ]]; then
+                  echo "Tag found (already exist). Skipping to the next step"
               else
                   echo "Tag not found, creating new tag"
                   git tag "$TAG_NAME"
