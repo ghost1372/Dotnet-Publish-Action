@@ -21,14 +21,14 @@ Publish your dotnet app (WinUI 3, WPF, Console) as a zip file with auto changelo
 ### Configuring GitHub Release
 - IS_PRE_RELEASE: `false`
 - SKIP_IF_RELEASE_EXIST: `true`
-- MAKE_LATEST: `false`
+- MAKE_LATEST: `true`
 - ALLOW_UPDATES: `false`
 - ARTIFACT_ERRORS_FAIL_BUILD: `false`
 
 if you set a suffix (beta, alpha, preview, experiment) for version tag in your csproj file, `IS_PRE_RELEASE` will be changed to `true` based on suffix.
 
 ```xml
-<Version>1.0.0-beta</Version>
+<Version>1.0.0-beta1</Version>
 ```
 
 ### Platform

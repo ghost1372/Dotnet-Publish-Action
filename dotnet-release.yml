@@ -21,7 +21,7 @@ env:
   # Configuring GitHub Release
   IS_PRE_RELEASE: false
   SKIP_IF_RELEASE_EXIST: true
-  MAKE_LATEST: false
+  MAKE_LATEST: true
   ALLOW_UPDATES: false
   ARTIFACT_ERRORS_FAIL_BUILD: false
 
@@ -64,9 +64,22 @@ jobs:
         path: ${{ env.APP_NAME }}-v${{ steps.get-version.outputs.version }}-${{ matrix.platform }}.zip
 
     # Checking version suffix for words like [alpha, beta, preview, and experiment]. Marking the release as a pre-release if any exists.
-    - run: echo "IS_PRE_RELEASE=true" >> $env:GITHUB_ENV    
-      if: contains(fromJson('["alpha", "beta", "preview", "experiment"]'), steps.get-version.outputs.version-suffix)
-    
+    - run: |
+        # Define the list of strings
+        $list = @("beta", "alpha", "preview", "experiment")
+
+        # Define the suffix variable
+        $suffix = steps.get-version.outputs.version-suffix
+
+        foreach ($item in $list) {
+          # Convert both strings to lower case for case-insensitive comparison
+          if ($suffix.ToLower().StartsWith($item.ToLower())) {
+            echo "IS_PRE_RELEASE=true" >> $env:GITHUB_ENV
+            break
+          }
+        }
+
+
   release:
     needs: build
     runs-on: ubuntu-latest
