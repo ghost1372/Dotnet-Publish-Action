@@ -126,7 +126,6 @@ jobs:
           git config --local user.name "GitHub Actions"
 
           TAG_NAME="v${{ env.APP_VERSION }}"
-          echo "$TAG_NAME"
           if [[ "${{ env.CHECK_TAG_EXISTENCE_BEFORE_CREATING_TAG }}" == "true" ]]; then
               git ls-remote --tags 2>/dev/null | grep $TAG_NAME 1>/dev/null
               if [[ "$?" == 0 ]]; then
