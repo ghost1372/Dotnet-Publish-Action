@@ -39,8 +39,11 @@ CommunityToolkit-Main: https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packa
 - PUBLISH_READY_TO_RUN: `false`
 - PUBLISH_TRIMMED: `false`
 - PUBLISH_TRIM_MODE: `partial`
+- PUBLISH_AOT: `false`
 
 > **_NOTE:_**  Use the `PUBLISH_TRIM_MODE` property to set the trimming granularity to either `partial` or `full`.
+
+> **_NOTE:_** `PUBLISH_AOT` currently support only `Console` App.
 
 ### Configuring GitHub Release
 - IS_PRE_RELEASE: `false`
