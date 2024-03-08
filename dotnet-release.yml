@@ -78,7 +78,9 @@ jobs:
         proj-path: ${{ env.PROJECT_PATH }}
 
     # Building with configured commands
-    - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-${{ matrix.platform }} /p:GITHUB_ACTIONS=true -p:Platform=${{ matrix.platform }} --self-contained ${{ env.PUBLISH_SELF_CONTAINED }} -p:PublishSingleFile=${{ env.PUBLISH_SINGLE_FILE }} -p:PublishReadyToRun=${{ env.PUBLISH_READY_TO_RUN }} -p:PublishTrimmed=${{ env.PUBLISH_TRIMMED }} -p:TrimMode=${{ env.PUBLISH_TRIM_MODE }} -p:PublishAot=${{ env.PUBLISH_AOT }} --output ${{ env.PUBLISH_OUTPUT_FOLDER }}/${{ matrix.platform }}
+    - run: |
+        $runtimeIdentifier = "${{ matrix.platform }}"
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-$($runtimeIdentifier.ToLower()) /p:GITHUB_ACTIONS=true -p:Platform=${{ matrix.platform }} --self-contained ${{ env.PUBLISH_SELF_CONTAINED }} -p:PublishSingleFile=${{ env.PUBLISH_SINGLE_FILE }} -p:PublishReadyToRun=${{ env.PUBLISH_READY_TO_RUN }} -p:PublishTrimmed=${{ env.PUBLISH_TRIMMED }} -p:TrimMode=${{ env.PUBLISH_TRIM_MODE }} -p:PublishAot=${{ env.PUBLISH_AOT }} --output ${{ env.PUBLISH_OUTPUT_FOLDER }}/${{ matrix.platform }}
 
     # Zipping folder and all files
     - uses: vimtor/action-zip@v1.2
