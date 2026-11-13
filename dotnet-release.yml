@@ -60,6 +60,7 @@ jobs:
          8.x.x
          9.x.x
          10.x.x
+         11.x.x
 
     # Add CommunityToolkit Labs and Main nuget sources
     - run: |
